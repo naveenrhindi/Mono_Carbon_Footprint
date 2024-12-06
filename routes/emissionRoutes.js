@@ -1,11 +1,23 @@
 const express = require('express');
-const { addEmission, updateEmission, getEmissions, deleteEmission } = require('../controllers/emissionController');
+const { 
+    addEmission, 
+    updateEmission, 
+    getEmissions, 
+    deleteEmission, 
+    calculateEmissions, 
+    getEmissionCalculations 
+} = require('../controllers/emissionController');
 const authenticate = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.post('/add-emissions', authenticate, addEmission);
-router.put('/update-emissions/:id', authenticate, updateEmission);
-router.get('/get-emissions', authenticate, getEmissions);
-router.delete('/delete-emissions/:id', authenticate, deleteEmission);
+router.use(authenticate);
+
+router.post('/add-emission', addEmission);
+router.put('/update-emission/:id', updateEmission);
+router.get('/get-emissions', getEmissions);
+router.delete('/delete-emission/:id', deleteEmission);
+
+router.get('/calculate-emissions', calculateEmissions);
+router.get('/get-emission-calculations', getEmissionCalculations);
 
 module.exports = router;

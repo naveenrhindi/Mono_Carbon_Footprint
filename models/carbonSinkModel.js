@@ -20,21 +20,7 @@ const CarbonSink = sequelize.define('CarbonSink', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            isIn: [['Afforestation']] // Add more types as needed
-        }
-    },
-    afforestation: {
-        type: DataTypes.JSON,
-        allowNull: false,
-        validate: {
-            isValidAfforestation(value) {
-                const required = ['area', 'treePlantingRate', 'treeType'];
-                required.forEach(field => {
-                    if (!(field in value)) {
-                        throw new Error(`Missing required field in afforestation: ${field}`);
-                    }
-                });
-            }
+            isIn: [['Afforestation', 'Biodiversity Conservation', 'Green Technology']]
         }
     },
     location: {
@@ -44,14 +30,68 @@ const CarbonSink = sequelize.define('CarbonSink', {
     creationDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        defaultValue: DataTypes.NOW
+    },
+    // Fields for Afforestation
+    afforestation: {
+        type: DataTypes.JSON,
+        allowNull: true,
         validate: {
-            isDate: true
+            isValidAfforestation(value) {
+                if (this.type === 'Afforestation') {
+                    if (!value) throw new Error('Afforestation data required for type Afforestation');
+                    const required = ['area', 'treePlantingRate', 'treeType'];
+                    required.forEach(field => {
+                        if (!(field in value)) {
+                            throw new Error(`Missing required field in afforestation: ${field}`);
+                        }
+                    });
+                }
+            }
+        }
+    },
+    // Fields for Biodiversity Conservation
+    biodiversityConservation: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+            isValidBiodiversity(value) {
+                if (this.type === 'Biodiversity Conservation') {
+                    if (!value) throw new Error('Biodiversity data required for type Biodiversity Conservation');
+                    const required = ['area', 'habitatType', 'carbonSequestration'];
+                    required.forEach(field => {
+                        if (!(field in value)) {
+                            throw new Error(`Missing required field in biodiversity: ${field}`);
+                        }
+                    });
+                }
+            }
+        }
+    },
+    // Fields for Green Technology
+    greenTechnology: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+            isValidGreenTech(value) {
+                if (this.type === 'Green Technology') {
+                    if (!value) throw new Error('Green Technology data required for type Green Technology');
+                    const required = ['technologyType', 'emissionReduction', 'energySource'];
+                    required.forEach(field => {
+                        if (!(field in value)) {
+                            throw new Error(`Missing required field in green technology: ${field}`);
+                        }
+                    });
+                }
+            }
         }
     }
 });
 
-// Establish relationship with User
-CarbonSink.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(CarbonSink, { foreignKey: 'userId' });
+// Set up associations
+CarbonSink.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user'
+});
 
 module.exports = CarbonSink;
