@@ -33,11 +33,7 @@ app.use(bodyParser.urlencoded({
 
 // Request logging middleware
 app.use((req, res, next) => {
-    console.log('Incoming request:');
-    console.log('  URL:', req.url);
-    console.log('  Method:', req.method);
-    console.log('  Headers:', req.headers);
-    console.log('  Body:', req.body);
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
 });
 
@@ -55,7 +51,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/users', userRoutes);
-app.use('/auth', userRoutes);
 app.use('/api/emissions', emissionRoutes);
 app.use('/api/carbon-sinks', carbonSinkRoutes);
 
@@ -65,9 +60,9 @@ app.get('/health', (req, res) => {
 });
 
 // Sync Database
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
     .then(() => {
-        console.log('Database synchronized and altered successfully');
+        console.log('Database synchronized successfully');
         
         // Start Server
         const PORT = process.env.PORT || 5001;
