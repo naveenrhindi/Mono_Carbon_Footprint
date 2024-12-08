@@ -1,3 +1,4 @@
+ HEAD
 # Carbon Neutrality Dashboard - Emission Factors Documentation
 
 This document provides detailed information about the emission factors and calculation methodologies used in the Carbon Neutrality Dashboard.
@@ -72,26 +73,26 @@ This document provides detailed information about the emission factors and calcu
 ## Calculation Methodology
 
 ### 1. Excavation Emissions
-```javascript
+
 excavationEmissions = (coalAmount * coalFactor * methodFactor) + (distance * fuelFactor)
-```
+
 
 ### 2. Transportation Emissions
-```javascript
+
 transportationEmissions = (totalDistance * fuelFactor * modeFactor) + (coalTransported * 0.1)
-```
+
 
 ### 3. Equipment Emissions
-```javascript
+
 equipmentEmissions = operatingHours * fuelConsumptionPerHour * fuelFactor * equipmentFactor
-```
+
 
 ### 4. Methane Emissions
-```javascript
+
 effectiveDischarge = dischargeAmount * (1 - captureRate/100)
 utilizationFactor = 1 - (conversionEfficiency/100 * methodEfficiency)
 methaneEmissions = effectiveDischarge * methaneGWP * utilizationFactor
-```
+
 
 ## Notes
 
@@ -106,3 +107,7 @@ methaneEmissions = effectiveDischarge * methaneGWP * utilizationFactor
 2. More transportation modes and fuel types
 3. Equipment-specific consumption patterns
 4. Enhanced methane capture and utilization methods
+
+
+# Mono_Carbon_Footprint
+ 8bbfe639f51aa678ba68059707cc0ded1521bfcf
